@@ -1,0 +1,22 @@
+{% block content %}
+<h2>{{ question.text }}</h2>
+
+{% if question.media %}
+{% if question.media.is_image %}
+<img src="{{ question.media.url }}" alt="Image for {{ question.text }}" style="max-width: 100%; height: auto;">
+{% elif question.media.is_video %}
+<iframe src="{{ question.media.url }}" frameborder="0" allowfullscreen style="width: 100%; height: 400px;"></iframe>
+{% endif %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    {% for choice in question.choice_set.all %}
+    <label>
+        <input type="radio" name="choice" value="{{ choice.id }}">
+        {{ choice.text }}
+    </label><br>
+    {% endfor %}
+    <button type="submit">Vote</button>
+</form>
+{% endblock %}

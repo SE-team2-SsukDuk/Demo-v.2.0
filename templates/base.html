@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voting Website</title>
+    <link rel="stylesheet" href="{% static 'polls/css/styles.css' %}">
+</head>
+
+<body>
+    <header>
+        <h1>Voting Website</h1>
+        {% if user.is_authenticated %}
+        <p>Welcome, {{ user.username }}!</p>
+        <form method="post" action="{% url 'logout' %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        {% else %}
+        <p><a href="{% url 'login' %}">Login</a></p>
+        {% endif %}
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+
+</html>

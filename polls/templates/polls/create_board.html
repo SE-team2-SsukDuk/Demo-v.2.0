@@ -1,0 +1,61 @@
+{% block content %}
+<h2>Create Board</h2>
+
+{% if user.is_authenticated %}
+<a href="{% url 'create_board' %}">
+    <button>Create Board</button>
+</a>
+{% else %}
+<p>You must <a href="{% url 'login' %}">login</a> to create a board.</p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <label for="name">Board Name:</label>
+    <input type="text" name="name" id="name" required>
+    <br>
+
+    <h3>Add Questions</h3>
+    <div id="questions">
+        <div class="question">
+            <label for="question-text">Question:</label>
+            <input type="text" name="questions[]" placeholder="Enter question" required>
+            <br>
+            <label for="media-type">Media Type:</label>
+            <select name="media_type[]">
+                <option value="">None</option>
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+            </select>
+            <br>
+            <label for="media-url">Media URL:</label>
+            <input type="url" name="media_url[]" placeholder="Enter media URL">
+        </div>
+    </div>
+    <button type="button" id="add-question">Add Another Question</button>
+    <br>
+    <button type="submit">Create Board</button>
+</form>
+
+<script>
+    document.getElementById('add-question').addEventListener('click', function () {
+        let questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        questionDiv.innerHTML = `
+            <label for="question-text">Question:</label>
+            <input type="text" name="questions[]" placeholder="Enter question" required>
+            <br>
+            <label for="media-type">Media Type:</label>
+            <select name="media_type[]">
+                <option value="">None</option>
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+            </select>
+            <br>
+            <label for="media-url">Media URL:</label>
+            <input type="url" name="media_url[]" placeholder="Enter media URL">
+        `;
+        document.getElementById('questions').appendChild(questionDiv);
+    });
+</script>
+{% endblock %}
